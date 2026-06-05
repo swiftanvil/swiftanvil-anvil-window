@@ -10,17 +10,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "AnvilWindow",
-            swiftSettings: [
-                .swiftLanguageMode(.v6),
-            ]
+            name: "AnvilWindow"
         ),
         .testTarget(
             name: "AnvilWindowTests",
-            dependencies: ["AnvilWindow"],
-            swiftSettings: [
-                .swiftLanguageMode(.v6),
-            ]
+            dependencies: ["AnvilWindow"]
         ),
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )
