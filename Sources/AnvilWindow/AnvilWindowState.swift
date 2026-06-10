@@ -1,6 +1,6 @@
 import Foundation
 #if canImport(AppKit)
-import AppKit
+    import AppKit
 #endif
 
 /// A snapshot of window state suitable for persistence.
@@ -39,16 +39,16 @@ public struct WindowFrame: Codable, Sendable, Equatable {
     }
 
     #if canImport(AppKit)
-    public init(_ rect: CGRect) {
-        self.x = Double(rect.origin.x)
-        self.y = Double(rect.origin.y)
-        self.width = Double(rect.size.width)
-        self.height = Double(rect.size.height)
-    }
+        public init(_ rect: CGRect) {
+            x = Double(rect.origin.x)
+            y = Double(rect.origin.y)
+            width = Double(rect.size.width)
+            height = Double(rect.size.height)
+        }
 
-    public var cgRect: CGRect {
-        CGRect(x: x, y: y, width: width, height: height)
-    }
+        public var cgRect: CGRect {
+            CGRect(x: x, y: y, width: width, height: height)
+        }
     #endif
 }
 
@@ -63,27 +63,29 @@ public actor AnvilWindowState {
 
     private var snapshots: [String: WindowStateSnapshot] = [:]
 
-    public init() {}
+    public init() { }
 
     /// Captures the current state of a window by ID.
     ///
     /// Returns `nil` if no window with the given ID is found.
     public func capture(id: String) -> WindowStateSnapshot? {
         #if canImport(AppKit)
-        guard let app = NSApp,
-              let window = app.windows.first(where: { $0.identifier?.rawValue == id }) else {
-            return snapshots[id]
-        }
-        let snapshot = WindowStateSnapshot(
-            id: id,
-            frame: WindowFrame(window.frame),
-            isVisible: window.isVisible,
-            level: window.level.rawValue
-        )
-        snapshots[id] = snapshot
-        return snapshot
+            guard
+                let app = NSApp,
+                let window = app.windows.first(where: { $0.identifier?.rawValue == id })
+            else {
+                return snapshots[id]
+            }
+            let snapshot = WindowStateSnapshot(
+                id: id,
+                frame: WindowFrame(window.frame),
+                isVisible: window.isVisible,
+                level: window.level.rawValue
+            )
+            snapshots[id] = snapshot
+            return snapshot
         #else
-        return snapshots[id]
+            return snapshots[id]
         #endif
     }
 
@@ -98,15 +100,17 @@ public actor AnvilWindowState {
     public func restore(from snapshot: WindowStateSnapshot) {
         snapshots[snapshot.id] = snapshot
         #if canImport(AppKit)
-        guard let app = NSApp,
-              let window = app.windows.first(where: { $0.identifier?.rawValue == snapshot.id }) else { return }
-        window.setFrame(snapshot.frame.cgRect, display: true)
-        window.level = NSWindow.Level(rawValue: snapshot.level)
-        if snapshot.isVisible {
-            window.makeKeyAndOrderFront(nil as NSWindow?)
-        } else {
-            window.orderOut(nil as NSWindow?)
-        }
+            guard
+                let app = NSApp,
+                let window = app.windows.first(where: { $0.identifier?.rawValue == snapshot.id })
+            else { return }
+            window.setFrame(snapshot.frame.cgRect, display: true)
+            window.level = NSWindow.Level(rawValue: snapshot.level)
+            if snapshot.isVisible {
+                window.makeKeyAndOrderFront(nil as NSWindow?)
+            } else {
+                window.orderOut(nil as NSWindow?)
+            }
         #endif
     }
 

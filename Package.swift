@@ -6,7 +6,7 @@ let package = Package(
     name: "AnvilWindow",
     platforms: [.macOS(.v15)],
     products: [
-        .library(name: "AnvilWindow", targets: ["AnvilWindow"]),
+        .library(name: "AnvilWindow", targets: ["AnvilWindow"])
     ],
     targets: [
         .target(
@@ -15,7 +15,7 @@ let package = Package(
         .testTarget(
             name: "AnvilWindowTests",
             dependencies: ["AnvilWindow"]
-        ),
+        )
     ],
     swiftLanguageModes: [.v6]
 )

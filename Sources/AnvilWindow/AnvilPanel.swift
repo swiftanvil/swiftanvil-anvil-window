@@ -32,11 +32,11 @@ public struct AnvilPanel<Content: View>: Scene {
     ) {
         self.title = title
         self.id = id
-        self.isFloating = floating
-        self.isResizable = resizable
+        isFloating = floating
+        isResizable = resizable
         self.defaultWidth = defaultWidth
         self.defaultHeight = defaultHeight
-        self.windowLevel = level
+        windowLevel = level
         self.content = content()
     }
 

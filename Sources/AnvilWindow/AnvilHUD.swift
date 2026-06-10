@@ -19,7 +19,7 @@ public struct AnvilHUD<Content: View>: View {
         @ViewBuilder content: () -> Content
     ) {
         self.title = title
-        self.autoDismissInterval = autoDismiss
+        autoDismissInterval = autoDismiss
         self.content = content()
     }
 
@@ -43,7 +43,7 @@ public struct AnvilHUD<Content: View>: View {
 
     private func dismiss() {
         #if canImport(AppKit)
-        NSApp.keyWindow?.close()
+            NSApp.keyWindow?.close()
         #endif
     }
 

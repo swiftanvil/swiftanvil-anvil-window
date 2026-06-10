@@ -5,7 +5,6 @@ import Testing
 
 @Suite("AnvilWindow")
 struct AnvilWindowTests {
-
     @Test("WindowFrame is Codable")
     func windowFrameCodable() throws {
         let frame = WindowFrame(x: 10, y: 20, width: 300, height: 400)
@@ -30,7 +29,7 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowState captures and restores snapshot")
-    func windowStateCaptureRestore() async throws {
+    func windowStateCaptureRestore() async {
         let state = AnvilWindowState()
         let snapshot = WindowStateSnapshot(
             id: "test",
@@ -46,7 +45,7 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowState clear removes snapshot")
-    func windowStateClear() async throws {
+    func windowStateClear() async {
         let state = AnvilWindowState()
         let snapshot = WindowStateSnapshot(
             id: "test",
@@ -63,10 +62,20 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowState clearAll removes all snapshots")
-    func windowStateClearAll() async throws {
+    func windowStateClearAll() async {
         let state = AnvilWindowState()
-        await state.restore(from: WindowStateSnapshot(id: "a", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0))
-        await state.restore(from: WindowStateSnapshot(id: "b", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0))
+        await state.restore(from: WindowStateSnapshot(
+            id: "a",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        ))
+        await state.restore(from: WindowStateSnapshot(
+            id: "b",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        ))
 
         await state.clearAll()
 
@@ -75,10 +84,20 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowState captureAll returns all snapshots")
-    func windowStateCaptureAll() async throws {
+    func windowStateCaptureAll() async {
         let state = AnvilWindowState()
-        let snapA = WindowStateSnapshot(id: "a", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0)
-        let snapB = WindowStateSnapshot(id: "b", frame: WindowFrame(x: 0, y: 0, width: 2, height: 2), isVisible: false, level: 1)
+        let snapA = WindowStateSnapshot(
+            id: "a",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        )
+        let snapB = WindowStateSnapshot(
+            id: "b",
+            frame: WindowFrame(x: 0, y: 0, width: 2, height: 2),
+            isVisible: false,
+            level: 1
+        )
 
         await state.restore(from: snapA)
         await state.restore(from: snapB)
@@ -88,7 +107,7 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowController tracks window IDs")
-    func windowControllerTrack() async throws {
+    func windowControllerTrack() async {
         let controller = AnvilWindowController()
 
         await controller.showWindow(id: "win1")
@@ -100,7 +119,7 @@ struct AnvilWindowTests {
     }
 
     @Test("WindowController close removes tracking")
-    func windowControllerClose() async throws {
+    func windowControllerClose() async {
         let controller = AnvilWindowController()
 
         await controller.showWindow(id: "win1")
@@ -146,9 +165,24 @@ struct AnvilWindowTests {
 
     @Test("WindowStateSnapshot equality")
     func snapshotEquality() {
-        let a = WindowStateSnapshot(id: "x", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0)
-        let b = WindowStateSnapshot(id: "x", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0)
-        let c = WindowStateSnapshot(id: "y", frame: WindowFrame(x: 0, y: 0, width: 1, height: 1), isVisible: true, level: 0)
+        let a = WindowStateSnapshot(
+            id: "x",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        )
+        let b = WindowStateSnapshot(
+            id: "x",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        )
+        let c = WindowStateSnapshot(
+            id: "y",
+            frame: WindowFrame(x: 0, y: 0, width: 1, height: 1),
+            isVisible: true,
+            level: 0
+        )
 
         #expect(a == b)
         #expect(a != c)
